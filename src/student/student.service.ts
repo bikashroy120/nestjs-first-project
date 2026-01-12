@@ -1,8 +1,16 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Student, StudentDocument } from './student.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class StudentService {
+    constructor(
+        @InjectModel(Student.name)
+        private studentModal: Model<StudentDocument>
+    ) { }
+
     private students = [
         { id: 1, name: "bikash", age: 23 },
         { id: 2, name: "tapos", age: 24 }

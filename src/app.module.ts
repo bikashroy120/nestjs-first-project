@@ -4,9 +4,16 @@ import { AppService } from './app.service';
 import { UserController } from './user/user.controller';
 import { StudentModule } from './student/student.module';
 import { CustomerModule } from './customer/customer.module';
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-    imports: [StudentModule, CustomerModule],
+    imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
+        MongooseModule.forRoot(process.env.MONGODB_URL!),
+        StudentModule,
+        CustomerModule,
+    ],
     controllers: [AppController, UserController],
     providers: [AppService],
 })

@@ -1,12 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { StudentService } from './student.service';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
 
 @Controller('student')
 export class StudentController {
     constructor(private readonly studentServices: StudentService) { };
 
     @Get()
+    @UseGuards(AuthGuard)
     getAll() {
         return this.studentServices.getAllStudent();
     }
