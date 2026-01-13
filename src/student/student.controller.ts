@@ -1,35 +1,35 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { StudentService } from './student.service';
-import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { Student } from './student.schema';
+
 
 @Controller('student')
 export class StudentController {
     constructor(private readonly studentServices: StudentService) { };
 
-    @Get()
-    @UseGuards(AuthGuard)
-    getAll() {
-        return this.studentServices.getAllStudent();
-    }
-
-    @Get(':id')
-    getById(@Param('id') id: string) {
-        return this.studentServices.getStudentById(Number(id));
-    }
-
     @Post()
-    create(@Body() body: { name: string, age: number }) {
-        return this.studentServices.createStudent(body);
+    async createStudent(@Body() data: Partial<Student>) {
+        return this.studentServices.createStudent(data)
     }
 
-    @Put(':id')
-    update(@Param('id') id: string, @Body() body: { name: string, age: number }) {
-        return this.studentServices.updateStudent(Number(id), body);
+    @Get()
+    async getStudents() {
+        return this.studentServices.getStudents();
     }
 
-    @Patch(":id")
-    patchStudent(@Param("id") id: string, @Body() body: Partial<{ name: string, age: number }>) {
-        return this.studentServices.patchStudent(Number(id), body);
+    @Get(":id")
+    async getStudentById(@Param('id') id: string) {
+        return this.studentServices.getStudentById(id)
+    }
+
+    @Patch(':id')
+    async updateData(@Param('id') id: string, @Body() data: Partial<Student>) {
+        return this.studentServices.updateStudent(id, data)
+    }
+
+    @Delete(':id')
+    async deleteStudent(@Param('id') id: string) {
+        return this.studentServices.deleteMetadata(id)
     }
 }
